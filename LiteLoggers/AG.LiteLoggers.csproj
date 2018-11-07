@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F46AAF93-2AFF-4970-BEB0-8DCABCEA4278}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AG</RootNamespace>
+    <AssemblyName>AG.LiteLoggers</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AG.LiteLoggers.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseMasked|AnyCPU'">
+    <OutputPath>bin\ReleaseMasked\</OutputPath>
+    <DefineConstants>TRACE;RELEASE_MASKED</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExceptionWrapper.cs" />
+    <Compile Include="Loggers\AppendedEventArgs.cs" />
+    <Compile Include="Loggers\Helpers\ConditionalLogging.cs" />
+    <Compile Include="Loggers\Helpers\ILoggerContainer.cs" />
+    <Compile Include="Loggers\IStringAppender.cs" />
+    <Compile Include="Loggers\Logger.cs" />
+    <Compile Include="Loggers\LoggerBaseImplementation.cs" />
+    <Compile Include="Loggers\ConsoleLogger.cs" />
+    <Compile Include="ExceptionInfoProvider.cs" />
+    <Compile Include="Loggers\VSOutputLogger.cs" />
+    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Loggers\LoggerBase.cs" />
+    <Compile Include="Loggers\Loggers.cs" />
+    <Compile Include="Loggers\LogLevel.cs" />
+    <Compile Include="AssemblyInfo\ProgramInfo.cs" />
+    <Compile Include="PathStringOperations\ActionWithFileAfterBackupResult.cs" />
+    <Compile Include="PathStringOperations\ApplicationFolders.cs" />
+    <Compile Include="PathStringOperations\ExtendedPath.cs" />
+    <Compile Include="PathStringOperations\FileDirectoryManager.cs" />
+    <Compile Include="PathStringOperations\OperationsWithBackingUpFile.cs" />
+    <Compile Include="PathStringOperations\PathDelegates.cs" />
+    <Compile Include="PathStringOperations\PathEncoders\ISymetrictPathEncoder.cs" />
+    <Compile Include="PathStringOperations\PathEncoders\IPathEncoder.cs" />
+    <Compile Include="PathStringOperations\PathEncoders\PathEncoderByChar.cs" />
+    <Compile Include="PathStringOperations\PathEncoders\PathEncoderByCharCode.cs" />
+    <Compile Include="PathStringOperations\PathType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Loggers\TextBoxLogger.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\WhatIsNew.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.ru.resx" />
+    <EmbeddedResource Include="Resources.uk.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
