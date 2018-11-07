@@ -6,14 +6,14 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 #if !RELEASE_MASKED
-[assembly: AssemblyCompany("Anatoly Gumenniy")]
-[assembly: AssemblyCopyright("Copyright © Anatoly Gumenniy 2013-2015")]
+[assembly: AssemblyCompany("Anatolii Humennyi")]
+[assembly: AssemblyCopyright("Copyright © Anatolii Humennyi 2013-2018")]
 #else
 [assembly: AssemblyCompany("AG")]
 [assembly: AssemblyCopyright("© AG")]
 #endif
 [assembly: AssemblyTitle("LiteLoggers")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Simple Logging framewrok that provides file,console an other sources to log. The library includes other useful path helpers")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("LiteLoggers")]
 [assembly: AssemblyTrademark("")]

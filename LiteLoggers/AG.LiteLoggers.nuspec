@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>AG.LiteLoggers</id>
+    <version>2.4.4.27</version>
+    <title>AG.LiteLoggers</title>
+    <authors>Anatolii Humennyi</authors>
+    <owners>Anatolii Humennyi</owners>
+    <projectUrl>https://github.com/tolias/AG.LiteLoggers</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple Logging framewrok that provides file,console an other sources to log. The library includes other useful path helpers</description>
+    <releaseNotes>First nuget package</releaseNotes>
+    <copyright>Copyright © Anatoly Gumenniy 2018</copyright>
+    <tags>Logger</tags>
+  </metadata>
+</package>

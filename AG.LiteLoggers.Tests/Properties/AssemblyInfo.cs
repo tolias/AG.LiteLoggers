@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AG.LiteLoggers.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anatoly Gumenniy")]
+[assembly: AssemblyCompany("Anatolii Humennyi")]
 [assembly: AssemblyProduct("AG.LiteLoggers.Tests")]
-[assembly: AssemblyCopyright("Copyright © Anatoly Gumenniy 2015")]
+[assembly: AssemblyCopyright("Copyright © Anatolii Humennyi 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
