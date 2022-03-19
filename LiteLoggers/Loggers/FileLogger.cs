@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using AG.AssemblyInfo;
-using System.Threading;
 using System.Security;
-using System.Text.RegularExpressions;
 using AG.PathStringOperations;
 
 namespace AG.Loggers
@@ -21,6 +18,8 @@ namespace AG.Loggers
 
         public delegate void StringBuilderProcessor(StringBuilder stringBuilder);
         public event StringBuilderProcessor HeaderLinesAppending;
+        private int flushIntervalMsec = 60000;
+        private System.Timers.Timer _flushingTimer;
 
         private object _fileSynchronizationContext = new object();
 
@@ -28,6 +27,7 @@ namespace AG.Loggers
         {
             this._logFileName = logFileName;
             this.LogLevel = logLevel;
+            this.WriteLogMode = writeLogMode;
             if (logProgramInfo)
             {
                 LogProgramInfo();
@@ -39,7 +39,50 @@ namespace AG.Loggers
         public WriteLogOptions WriteLogMode
         {
             get { return _writeLogMode; }
-            set { _writeLogMode = value; }
+            set
+            {
+                _writeLogMode = value;
+                UpdateFlushingTimer();
+            }
+        }
+
+        /// <summary>
+        /// Interval used to flush logs to file if WriteLogMode = Lock.
+        /// If FlushIntervalMsec == 0 then flushing will occur only when stream buffer is filled enough with logs in StreamWriter
+        /// </summary>
+        public int FlushIntervalMsec
+        {
+            get { return flushIntervalMsec; }
+            set
+            {
+                flushIntervalMsec = value;
+                UpdateFlushingTimer();
+            }
+        }
+
+        private void UpdateFlushingTimer()
+        {
+            lock (_fileSynchronizationContext)
+            {
+                if (_writeLogMode == WriteLogOptions.Lock && flushIntervalMsec > 0)
+                {
+                    if (_flushingTimer == null)
+                    {
+                        _flushingTimer = new System.Timers.Timer();
+                        _flushingTimer.Elapsed += _flushingTimer_Elapsed;
+                    }
+                    _flushingTimer.Interval = flushIntervalMsec;
+                }
+                else
+                {
+                    _flushingTimer = null;
+                }
+            }
+        }
+
+        private void _flushingTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            FlushNow();
         }
 
         public string LogFileName
@@ -80,10 +123,16 @@ namespace AG.Loggers
                             _logFileStream = null;
                             break;
                         case WriteLogOptions.LockAndFlushAfterEveryWrite:
-                            //a bad solution... but _logFileStream.Flush() doesn't work. It doesn't want to flush writed data to a file immediatelly
+                            //a bad solution... but _logFileStream.Flush() doesn't work. It doesn't want to flush written data to a file immediatelly
                             _logFileStream.Close();
                             _logFileStream = new StreamWriter(_logFileName, true, utf8Encoding);
                             //_logFileStream.Flush();
+                            break;
+                        case WriteLogOptions.Lock:
+                            if (_flushingTimer != null)
+                            {
+                                _flushingTimer.Enabled = true;
+                            }
                             break;
                     }
                 }
@@ -114,10 +163,7 @@ namespace AG.Loggers
                 fileHeaderLines.Append(Environment.OSVersion.Version);
                 fileHeaderLines.Append(' ');
                 fileHeaderLines.Append(Environment.OSVersion.ServicePack);
-                if (HeaderLinesAppending != null)
-                {
-                    HeaderLinesAppending(fileHeaderLines);
-                }
+                HeaderLinesAppending?.Invoke(fileHeaderLines);
                 fileHeaderLines.Append(" | LogLevel: ");
                 fileHeaderLines.Append(this.LogLevel);
                 Log(LogLevel.Debug, fileHeaderLines.ToString());
@@ -134,7 +180,7 @@ namespace AG.Loggers
             //{
             //}
             int openingNewFileAttempts = 0;
-        tryToOpenFileAgain:
+            tryToOpenFileAgain:
             try
             {
                 _logFileStream = new StreamWriter(_logFileName, true, utf8Encoding);
@@ -155,7 +201,7 @@ namespace AG.Loggers
             }
             catch (SystemException systemException)
             {
-                if(systemException is IOException
+                if (systemException is IOException
                     || systemException is UnauthorizedAccessException
                     || systemException is SecurityException)
                 {
@@ -217,14 +263,31 @@ namespace AG.Loggers
             Lock
         }
 
+        public bool FlushNow()
+        {
+            lock (_fileSynchronizationContext)
+            {
+                if (_flushingTimer != null)
+                {
+                    _flushingTimer.Enabled = false;
+                }
+                if (_logFileStream != null)
+                {
+                    _logFileStream.Close();
+                    _logFileStream = null;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void Close()
         {
             lock (_fileSynchronizationContext)
             {
                 try
                 {
-                    if(_logFileStream!= null)
-                        _logFileStream.Close();
+                    FlushNow();
                 }
                 catch { }
                 _logFileStream = null;

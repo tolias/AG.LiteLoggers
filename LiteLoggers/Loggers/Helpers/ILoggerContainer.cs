@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AG.Loggers.Helpers
+﻿namespace AG.Loggers.Helpers
 {
     public interface ILoggerContainer
     {

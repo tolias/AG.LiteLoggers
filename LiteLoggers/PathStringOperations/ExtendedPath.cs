@@ -26,13 +26,13 @@ namespace AG.PathStringOperations
                 return currentDir;
             }
         }
-		
+
         public static string GetRelativePath(string relativelyThisPath, string absoluteFullPath)
         {
-            if(absoluteFullPath == null || !absoluteFullPath.StartsWith(relativelyThisPath))
+            if (absoluteFullPath == null || !absoluteFullPath.StartsWith(relativelyThisPath))
                 return absoluteFullPath;
             string relativePath = absoluteFullPath.Substring(relativelyThisPath.Length);
-            if(relativePath.StartsWith(Path.DirectorySeparatorChar.ToString()))
+            if (relativePath.StartsWith(Path.DirectorySeparatorChar.ToString()))
                 relativePath = relativePath.Substring(1);
             return relativePath;
         }
@@ -83,10 +83,10 @@ namespace AG.PathStringOperations
 
             int lastIndex = path.Length - 1;
             int startPos;
-            if(path[lastIndex] == Path.DirectorySeparatorChar)
+            if (path[lastIndex] == Path.DirectorySeparatorChar)
             {
                 startPos = lastIndex - 1;
-                if(startPos == 0)
+                if (startPos == 0)
                 {
                     return path;
                 }
@@ -131,7 +131,7 @@ namespace AG.PathStringOperations
         /// <param name="pattern">Pattern which means number part. Example: ({0})</param>
         /// <param name="startNumber"></param>
         /// <returns></returns>
-        public static string GetIncrementedPath(string path, string pattern, int startNumber)
+        public static string GetIncrementedPath(string path, string pattern, int startNumber, bool freePathOnly = false)
         {
             string pathWithoutExt = GetPathWithoutExtension(path);
             string pathExt = Path.GetExtension(path);
@@ -176,17 +176,33 @@ namespace AG.PathStringOperations
                 isNumberInNameExists = int.TryParse(strNum, out num);
 
             }
-            if (!isNumberInNameExists)
-            {
-                pathWithoutExt += string.Format(pattern, startNumber);
-            }
-            else
-            {
-                num++;
-                pathWithoutExt = pathWithoutExt.Remove(pathWithoutExt.Length - matchValue.Length);
-                pathWithoutExt += string.Format(pattern, num);
 
-            }
+
+            bool fileWithSuchPathExists = false;
+            bool pathMustBeIncremented = false;
+            do
+            {
+                if (!pathMustBeIncremented && !isNumberInNameExists)
+                {
+                    pathWithoutExt += string.Format(pattern, startNumber);
+                }
+                else
+                {
+                    num++;
+                    pathWithoutExt = pathWithoutExt.Remove(pathWithoutExt.Length - matchValue.Length);
+                    pathWithoutExt += string.Format(pattern, num);
+                }
+
+                if (freePathOnly)
+                {
+                    var finalPath = pathWithoutExt + pathExt;
+                    fileWithSuchPathExists = File.Exists(finalPath);
+                    if (fileWithSuchPathExists)
+                    {
+                        pathMustBeIncremented = true;
+                    }
+                }
+            } while (freePathOnly && fileWithSuchPathExists);
 
             return pathWithoutExt + pathExt;
         }

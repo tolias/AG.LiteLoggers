@@ -10,11 +10,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Simple Logging framewrok that provides file,console an other sources to log. The library includes other useful path helpers</description>
     <releaseNotes>
-      Added TextBoxLogger
-      Added FileAndTextBoxLogger
-      All loggers made thread-safe
-      Added property ExtendedPath.ApplicationExecutablePath
-      Improved exception info output
+      Fixed: writeLogMode didn't work in FileLogger constructor
+      Added: FileLogger.FlushNow() method
+      Added: FileLogger.FlushIntervalMsec property
     </releaseNotes>
     <copyright>Copyright © Anatoly Gumenniy 2018</copyright>
     <tags>Logger</tags>

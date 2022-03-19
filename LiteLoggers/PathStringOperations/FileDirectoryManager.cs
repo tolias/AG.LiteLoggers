@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using AG.Loggers;
 using AG.Loggers.Helpers;

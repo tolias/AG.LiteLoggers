@@ -34,7 +34,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\AG.LiteLoggers.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseMasked|AnyCPU'">
     <OutputPath>bin\ReleaseMasked\</OutputPath>
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionWrapper.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Loggers\AppendedEventArgs.cs" />
     <Compile Include="Loggers\Helpers\ConditionalLogging.cs" />
     <Compile Include="Loggers\Helpers\ILoggerContainer.cs" />
